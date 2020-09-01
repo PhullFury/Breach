@@ -24,6 +24,9 @@ void APlayerCharacter::BeginPlay()
 	Gun = GetWorld()->SpawnActor<AGunBase>(EquippedGun);
 	Gun->AttachToComponent(GetMesh(), FAttachmentTransformRules::KeepRelativeTransform, TEXT("WeaponSocket"));
 	Gun->SetOwner(this);
+
+	Health = MaxHealth;
+	UE_LOG(LogTemp, Warning, TEXT("Total Health: %f"), Health);
 }
 
 // Called every frame
@@ -43,8 +46,7 @@ void APlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 	PlayerInputComponent->BindAxis(TEXT("LookUp"), this, &APawn::AddControllerPitchInput);
 	PlayerInputComponent->BindAxis(TEXT("LookSideways"), this, &APawn::AddControllerYawInput);
 	PlayerInputComponent->BindAction(TEXT("Jump"), EInputEvent::IE_Pressed, this, &ACharacter::Jump);
-
-	//TODO Add ashoot function and call the shoot function from GunBase
+	PlayerInputComponent->BindAction(TEXT("Shoot"), EInputEvent::IE_Pressed, this, &APlayerCharacter::PullTrigger);
 }
 
 void APlayerCharacter::MoveUp(float AxisValue)
@@ -56,3 +58,15 @@ void APlayerCharacter::MoveSideways(float AxisValue)
 {
 	AddMovementInput(GetActorRightVector() * AxisValue);
 }
+
+void APlayerCharacter::PullTrigger()
+{
+	Gun->PullTrigger();
+}
+
+float APlayerCharacter::GetCurrentHealth()
+{
+	return Health / MaxHealth;
+}
+
+//Take Damage

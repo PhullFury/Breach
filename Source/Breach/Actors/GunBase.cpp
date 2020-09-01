@@ -1,9 +1,12 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
+#include "Breach/Characters/PlayerCharacter.h"
 #include "Components/SkeletalMeshComponent.h"
+#include "DrawDebugHelpers.h"
 #include "GunBase.h"
 
+#define OUT
 
 // Sets default values
 AGunBase::AGunBase()
@@ -33,3 +36,28 @@ void AGunBase::Tick(float DeltaTime)
 }
 
 //TODO implement a shoot function and also spawn some effects
+
+void AGunBase::PullTrigger()
+{
+	UE_LOG(LogTemp, Warning, TEXT("You have been shot boy!"));
+
+	APlayerCharacter* OwnerPawn = Cast< APlayerCharacter>(GetOwner());
+	if (OwnerPawn == nullptr) return;
+	AController* OwnerController = OwnerPawn->GetController();
+	if (OwnerController == nullptr) return;
+
+	FVector OwnerLocation;
+	FRotator OwnerRotation;
+	OwnerController->GetPlayerViewPoint(OUT OwnerLocation, OUT OwnerRotation);
+	FVector LineEnd = OwnerLocation + OwnerRotation.Vector() * MaxRange;
+	FHitResult Hit;
+	FCollisionQueryParams Params;
+	Params.AddIgnoredActor(this);
+	Params.AddIgnoredActor(GetOwner());
+
+	GetWorld()->LineTraceSingleByChannel(OUT Hit, OwnerLocation, LineEnd, ECollisionChannel::ECC_GameTraceChannel1, Params);
+
+	DrawDebugPoint(GetWorld(), Hit.Location, 20, FColor::Red, true);
+
+	//TODO Dealt damage
+}

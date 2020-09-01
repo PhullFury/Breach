@@ -14,17 +14,22 @@ class BREACH_API AGunBase : public AActor
 public:	
 	// Sets default values for this actor's properties
 	AGunBase();
-
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
+
+	void PullTrigger();
+
 
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
+
 
 private:	
 	UPROPERTY(VisibleAnywhere)
 		USceneComponent* Root;
 	UPROPERTY(VisibleAnywhere)
 		USkeletalMeshComponent* Mesh;
+	UPROPERTY(EditAnywhere, Category = "Combat")
+		float MaxRange = 1000;
 };

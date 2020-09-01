@@ -16,12 +16,15 @@ class BREACH_API APlayerCharacter : public ACharacter
 public:
 	// Sets default values for this character's properties
 	APlayerCharacter();
-
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
-
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+
+	float Health;
+
+	UFUNCTION(BlueprintPure)
+		float GetCurrentHealth();
 
 
 protected:
@@ -32,9 +35,12 @@ protected:
 private:	
 	void MoveUp(float AxisValue);
 	void MoveSideways(float AxisValue);
+	void PullTrigger();
 
 	UPROPERTY()
 		AGunBase* Gun;
 	UPROPERTY(EditAnywhere, Category = "Weapons")
 		TSubclassOf<AGunBase> EquippedGun;
+	UPROPERTY(EditAnywhere, Category = "Health")
+		float MaxHealth = 100;
 };
