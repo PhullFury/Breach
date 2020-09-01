@@ -6,6 +6,8 @@
 #include "GameFramework/Character.h"
 #include "PlayerCharacter.generated.h"
 
+class AGunBase;
+
 UCLASS()
 class BREACH_API APlayerCharacter : public ACharacter
 {
@@ -30,4 +32,9 @@ protected:
 private:	
 	void MoveUp(float AxisValue);
 	void MoveSideways(float AxisValue);
+
+	UPROPERTY()
+		AGunBase* Gun;
+	UPROPERTY(EditAnywhere, Category = "Weapons")
+		TSubclassOf<AGunBase> EquippedGun;
 };
