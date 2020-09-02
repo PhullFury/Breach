@@ -9,7 +9,6 @@ void APlayersController::BeginPlay()
 {
 	Super::BeginPlay();
 
-	//fix this
 	HUD = CreateWidget(this, HUDClass);
 	if (HUD != nullptr)
 	{

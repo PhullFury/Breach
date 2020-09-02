@@ -33,7 +33,6 @@ void APlayerCharacter::BeginPlay()
 void APlayerCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-
 }
 
 // Called to bind functionality to input
@@ -64,9 +63,35 @@ void APlayerCharacter::PullTrigger()
 	Gun->PullTrigger();
 }
 
+float APlayerCharacter::TakeDamage(float DamageAmount, struct FDamageEvent const& DamageEvent, class AController* EventInstigator, AActor* DamageCauser)
+{
+	float DamageToApply = Super::TakeDamage(DamageAmount, DamageEvent, EventInstigator, DamageCauser);
+	DamageToApply = FMath::Min(Health, DamageToApply);
+	Health -= DamageToApply;
+	UE_LOG(LogTemp, Warning, TEXT("Remaining Health: %f"), Health);
+
+	if (IsDead())
+	{
+		DetachFromControllerPendingDestroy();
+		GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	}
+
+	return DamageToApply;
+}
+
+bool APlayerCharacter::IsDead()
+{
+	if (Health == 0)
+	{
+		return true;
+	}
+	else
+	{
+		return false;
+	}
+}
+
 float APlayerCharacter::GetCurrentHealth()
 {
 	return Health / MaxHealth;
 }
-
-//Take Damage

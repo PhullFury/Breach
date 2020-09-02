@@ -32,4 +32,10 @@ private:
 		USkeletalMeshComponent* Mesh;
 	UPROPERTY(EditAnywhere, Category = "Combat")
 		float MaxRange = 1000;
+	UPROPERTY(EditAnywhere, Category = "Combat")
+		float GunDamage = 10;
+	UPROPERTY(EditDefaultsOnly, Category = "Effects")
+		UParticleSystem* MuzzleFlash;
+	UPROPERTY(EditDefaultsOnly, Category = "Effects")
+		UParticleSystem* ImpactFlash;
 };

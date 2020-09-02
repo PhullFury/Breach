@@ -5,6 +5,7 @@
 #include "Components/SkeletalMeshComponent.h"
 #include "DrawDebugHelpers.h"
 #include "GunBase.h"
+#include "Kismet/GameplayStatics.h"
 
 #define OUT
 
@@ -35,11 +36,14 @@ void AGunBase::Tick(float DeltaTime)
 
 }
 
-//TODO implement a shoot function and also spawn some effects
+//TODO Refactor the PullTrigger
 
 void AGunBase::PullTrigger()
 {
-	UE_LOG(LogTemp, Warning, TEXT("You have been shot boy!"));
+	if (MuzzleFlash != nullptr)
+	{
+		UGameplayStatics::SpawnEmitterAttached(MuzzleFlash, Mesh, TEXT("Muzzle"));
+	}
 
 	APlayerCharacter* OwnerPawn = Cast< APlayerCharacter>(GetOwner());
 	if (OwnerPawn == nullptr) return;
@@ -50,14 +54,24 @@ void AGunBase::PullTrigger()
 	FRotator OwnerRotation;
 	OwnerController->GetPlayerViewPoint(OUT OwnerLocation, OUT OwnerRotation);
 	FVector LineEnd = OwnerLocation + OwnerRotation.Vector() * MaxRange;
-	FHitResult Hit;
+	FHitResult ShotResult;
 	FCollisionQueryParams Params;
 	Params.AddIgnoredActor(this);
 	Params.AddIgnoredActor(GetOwner());
 
-	GetWorld()->LineTraceSingleByChannel(OUT Hit, OwnerLocation, LineEnd, ECollisionChannel::ECC_GameTraceChannel1, Params);
-
-	DrawDebugPoint(GetWorld(), Hit.Location, 20, FColor::Red, true);
-
-	//TODO Dealt damage
+	bool bHitSuccess = GetWorld()->LineTraceSingleByChannel(OUT ShotResult, OwnerLocation, LineEnd, ECollisionChannel::ECC_GameTraceChannel1, Params);
+	if (bHitSuccess)
+	{
+		FVector ShotDirection = -OwnerRotation.Vector();
+		AActor* HitActor = ShotResult.GetActor();
+		if (ImpactFlash != nullptr)
+		{
+			UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), ImpactFlash, ShotResult.Location, ShotDirection.Rotation(), true);
+		}
+		if (HitActor != nullptr)
+		{
+			FPointDamageEvent GunDamageEvent(GunDamage, ShotResult, ShotDirection, nullptr);
+			HitActor->TakeDamage(GunDamage, GunDamageEvent, OwnerController, OwnerPawn);
+		}
+	}
 }
