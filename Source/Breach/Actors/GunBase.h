@@ -17,7 +17,6 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
-	void PullTrigger();
 
 
 protected:
@@ -25,17 +24,5 @@ protected:
 	virtual void BeginPlay() override;
 
 
-private:	
-	UPROPERTY(VisibleAnywhere)
-		USceneComponent* Root;
-	UPROPERTY(VisibleAnywhere)
-		USkeletalMeshComponent* Mesh;
-	UPROPERTY(EditAnywhere, Category = "Combat")
-		float MaxRange = 1000;
-	UPROPERTY(EditAnywhere, Category = "Combat")
-		float GunDamage = 10;
-	UPROPERTY(EditDefaultsOnly, Category = "Effects")
-		UParticleSystem* MuzzleFlash;
-	UPROPERTY(EditDefaultsOnly, Category = "Effects")
-		UParticleSystem* ImpactFlash;
+private:
 };

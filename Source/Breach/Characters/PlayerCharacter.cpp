@@ -1,7 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "Breach/Actors/GunBase.h"
+#include "Breach/Pawns/BaseGun.h"
 #include "Components/CapsuleComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "PlayerCharacter.h"
@@ -21,9 +21,12 @@ void APlayerCharacter::BeginPlay()
 	Super::BeginPlay();
 	
 	GetMesh()->HideBoneByName(TEXT("Weapon"), EPhysBodyOp::PBO_None);
-	Gun = GetWorld()->SpawnActor<AGunBase>(EquippedGun);
-	Gun->AttachToComponent(GetMesh(), FAttachmentTransformRules::KeepRelativeTransform, TEXT("WeaponSocket"));
-	Gun->SetOwner(this);
+	if (EquippedGun != nullptr)
+	{
+		Gun = GetWorld()->SpawnActor<ABaseGun>(EquippedGun);
+		Gun->AttachToComponent(GetMesh(), FAttachmentTransformRules::KeepRelativeTransform, TEXT("WeaponSocket"));
+		Gun->SetOwner(this);
+	}
 
 	Health = MaxHealth;
 	UE_LOG(LogTemp, Warning, TEXT("Total Health: %f"), Health);

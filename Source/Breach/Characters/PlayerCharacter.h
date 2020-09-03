@@ -6,7 +6,7 @@
 #include "GameFramework/Character.h"
 #include "PlayerCharacter.generated.h"
 
-class AGunBase;
+class ABaseGun;
 
 UCLASS()
 class BREACH_API APlayerCharacter : public ACharacter
@@ -41,9 +41,9 @@ private:
 	void PullTrigger();
 
 	UPROPERTY()
-		AGunBase* Gun;
+		ABaseGun* Gun;
 	UPROPERTY(EditAnywhere, Category = "Weapons")
-		TSubclassOf<AGunBase> EquippedGun;
+		TSubclassOf<ABaseGun> EquippedGun;
 	UPROPERTY(EditAnywhere, Category = "Health")
 		float MaxHealth = 100;
 };
