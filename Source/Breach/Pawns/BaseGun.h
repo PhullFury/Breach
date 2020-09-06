@@ -20,6 +20,10 @@ public:
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
 	void PullTrigger();
+	int32 GetMaxBullets();
+
+	UPROPERTY(EditAnywhere, Category = "Combat")
+		int32 MaxBullets = 30;
 
 protected:
 	// Called when the game starts or when spawned
@@ -39,4 +43,7 @@ private:
 		UParticleSystem* MuzzleFlash;
 	UPROPERTY(EditDefaultsOnly, Category = "Effects")
 		UParticleSystem* ImpactFlash;
+
+	bool GunTrace(FHitResult& ShotResult, FVector& ShotDirection);
+	AController* GetOwnerController() const;
 };

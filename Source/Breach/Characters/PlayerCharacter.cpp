@@ -1,6 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
+#include "Animation/AnimInstance.h"
 #include "Breach/Pawns/BaseGun.h"
 #include "Components/CapsuleComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
@@ -30,6 +31,8 @@ void APlayerCharacter::BeginPlay()
 
 	Health = MaxHealth;
 	UE_LOG(LogTemp, Warning, TEXT("Total Health: %f"), Health);
+	Bullets = Gun->GetMaxBullets();
+	UE_LOG(LogTemp, Warning, TEXT("Total Bullets: %i"), Bullets);
 }
 
 // Called every frame
@@ -49,6 +52,7 @@ void APlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 	PlayerInputComponent->BindAxis(TEXT("LookSideways"), this, &APawn::AddControllerYawInput);
 	PlayerInputComponent->BindAction(TEXT("Jump"), EInputEvent::IE_Pressed, this, &ACharacter::Jump);
 	PlayerInputComponent->BindAction(TEXT("Shoot"), EInputEvent::IE_Pressed, this, &APlayerCharacter::PullTrigger);
+	PlayerInputComponent->BindAction(TEXT("Reload"), EInputEvent::IE_Pressed, this, &APlayerCharacter::Reload);
 }
 
 void APlayerCharacter::MoveUp(float AxisValue)
@@ -63,7 +67,26 @@ void APlayerCharacter::MoveSideways(float AxisValue)
 
 void APlayerCharacter::PullTrigger()
 {
-	Gun->PullTrigger();
+	if (Bullets > 0)
+	{
+		Gun->PullTrigger();
+		Bullets--;
+		UE_LOG(LogTemp, Warning, TEXT("Bullets Remaining: %i"), Bullets);
+		if (FireAnimation != nullptr)
+		{
+			PlayAnimMontage(FireAnimation, 1.f);
+		}
+	}
+	else
+	{
+		UE_LOG(LogTemp, Error, TEXT("No bullets Remaining"));
+	}
+}
+
+void APlayerCharacter::Reload()
+{
+	Bullets = Gun->GetMaxBullets();
+	UE_LOG(LogTemp, Warning, TEXT("Gun reloaded"));
 }
 
 float APlayerCharacter::TakeDamage(float DamageAmount, struct FDamageEvent const& DamageEvent, class AController* EventInstigator, AActor* DamageCauser)

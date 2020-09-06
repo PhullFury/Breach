@@ -7,6 +7,7 @@
 #include "PlayerCharacter.generated.h"
 
 class ABaseGun;
+class UAnimMontage;
 
 UCLASS()
 class BREACH_API APlayerCharacter : public ACharacter
@@ -39,11 +40,16 @@ private:
 	void MoveUp(float AxisValue);
 	void MoveSideways(float AxisValue);
 	void PullTrigger();
+	void Reload();
+
+	int32 Bullets;
 
 	UPROPERTY()
 		ABaseGun* Gun;
 	UPROPERTY(EditAnywhere, Category = "Weapons")
-		TSubclassOf<ABaseGun> EquippedGun;
+		TSubclassOf<ABaseGun> EquippedGun; 
+	UPROPERTY(EditAnywhere, Category = "Weapons")
+		UAnimMontage* FireAnimation;
 	UPROPERTY(EditAnywhere, Category = "Health")
 		float MaxHealth = 100;
 };
