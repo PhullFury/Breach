@@ -40,8 +40,6 @@ void ABaseGun::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 }
 
-//TODO Refactor the PullTrigger
-
 void ABaseGun::PullTrigger()
 {
 	if (MuzzleFlash != nullptr)
@@ -66,7 +64,6 @@ void ABaseGun::PullTrigger()
 	}
 }
 	
-
 AController* ABaseGun::GetOwnerController() const
 {
 	APlayerCharacter* OwnerPawn = Cast< APlayerCharacter>(GetOwner());
@@ -96,4 +93,9 @@ bool ABaseGun::GunTrace(FHitResult& ShotResult, FVector& ShotDirection)
 int32 ABaseGun::GetMaxBullets()
 {
 	return MaxBullets;
+}
+
+float ABaseGun::GetFireRate()
+{
+	return FireRate;
 }

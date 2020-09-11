@@ -21,9 +21,12 @@ public:
 
 	void PullTrigger();
 	int32 GetMaxBullets();
+	float GetFireRate();
 
 	UPROPERTY(EditAnywhere, Category = "Combat")
 		int32 MaxBullets = 30;
+	UPROPERTY(EditAnywhere, Category = "Combat")
+		float FireRate = 0.2;
 
 protected:
 	// Called when the game starts or when spawned

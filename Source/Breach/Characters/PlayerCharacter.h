@@ -39,10 +39,15 @@ protected:
 private:	
 	void MoveUp(float AxisValue);
 	void MoveSideways(float AxisValue);
-	void PullTrigger();
+	void StartPullTrigger();
+	void StopPullTrigger();
+	void Shoot();
 	void Reload();
 
 	int32 Bullets;
+	float FireRate;
+	bool bIsFiring = false;
+	FTimerHandle FireRateHandle;
 
 	UPROPERTY()
 		ABaseGun* Gun;
