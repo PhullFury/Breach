@@ -21,20 +21,6 @@ void ABreachAIController::BeginPlay()
 void ABreachAIController::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-
-	/*if (bIsPlayerInSight)
-	{
-		UE_LOG(LogTemp, Error, TEXT("Enemy sees you!"));
-	}
-	else if (!bIsPlayerInSight)
-	{
-		UE_LOG(LogTemp, Error, TEXT("Enemy lost you!"));
-	}*/
-}
-
-AActor* ABreachAIController::GetPlayer()
-{
-	return Player;
 }
 
 bool ABreachAIController::GetPlayerInSight()

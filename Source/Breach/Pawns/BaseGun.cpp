@@ -31,7 +31,6 @@ void ABaseGun::BeginPlay()
 void ABaseGun::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-
 }
 
 // Called to bind functionality to input

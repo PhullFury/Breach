@@ -30,9 +30,6 @@ public:
 
 	UPROPERTY(BlueprintReadWrite, VisibleAnywhere)
 		bool bIsPlayerInSight = false; 
-	UPROPERTY(BlueprintReadWrite, VisibleAnywhere)
-		AActor* Player = nullptr;
 
-	AActor* GetPlayer();
 	bool GetPlayerInSight();
 };
