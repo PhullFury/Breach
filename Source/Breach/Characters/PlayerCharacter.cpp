@@ -109,6 +109,15 @@ void APlayerCharacter::Shoot()
 	}
 }
 
+void APlayerCharacter::EnemyShoot()
+{
+	Gun->PullTrigger();
+	if (FireAnimation != nullptr)
+	{
+		PlayAnimMontage(FireAnimation, 1.f);
+	}
+}
+
 void APlayerCharacter::Reload()
 {
 	Bullets = Gun->GetMaxBullets();
