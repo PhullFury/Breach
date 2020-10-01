@@ -5,6 +5,7 @@
 #include "Breach/Pawns/BaseGun.h"
 #include "Components/CapsuleComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
+#include "Kismet/GameplayStatics.h"
 #include "PlayerCharacter.h"
 #include "TimerManager.h"
 
@@ -122,7 +123,10 @@ void APlayerCharacter::Reload()
 {
 	Bullets = Gun->GetMaxBullets();
 	FireRateHandle.Invalidate();
-	UE_LOG(LogTemp, Warning, TEXT("Gun reloaded"));
+	if (ReloadSound != nullptr)
+	{
+		UGameplayStatics::SpawnSoundAttached(ReloadSound, GetMesh(), TEXT("WeaponSocket"));
+	}
 }
 
 float APlayerCharacter::TakeDamage(float DamageAmount, struct FDamageEvent const& DamageEvent, class AController* EventInstigator, AActor* DamageCauser)

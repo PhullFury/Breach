@@ -46,6 +46,10 @@ private:
 		UParticleSystem* MuzzleFlash;
 	UPROPERTY(EditDefaultsOnly, Category = "Effects")
 		UParticleSystem* ImpactFlash;
+	UPROPERTY(EditDefaultsOnly, Category = "Effects")
+		USoundBase* MuzzleSound;
+	UPROPERTY(EditDefaultsOnly, Category = "Effects")
+		USoundBase* ImpactSound;
 
 	bool GunTrace(FHitResult& ShotResult, FVector& ShotDirection);
 	AController* GetOwnerController() const;

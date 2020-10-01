@@ -23,6 +23,7 @@ public:
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
 	virtual float TakeDamage(float DamageAmount, struct FDamageEvent const& DamageEvent, class AController* EventInstigator, AActor* DamageCauser) override;
+	void EnemyShoot();
 
 	float Health;
 
@@ -55,6 +56,8 @@ private:
 		TSubclassOf<ABaseGun> EquippedGun; 
 	UPROPERTY(EditAnywhere, Category = "Weapons")
 		UAnimMontage* FireAnimation;
+	UPROPERTY(EditDefaultsOnly, Category = "Weapons")
+		USoundBase* ReloadSound;
 	UPROPERTY(EditAnywhere, Category = "Health")
 		float MaxHealth = 100;
 };

@@ -41,9 +41,10 @@ void ABaseGun::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 
 void ABaseGun::PullTrigger()
 {
-	if (MuzzleFlash != nullptr)
+	if (MuzzleFlash != nullptr && MuzzleSound != nullptr)
 	{
 		UGameplayStatics::SpawnEmitterAttached(MuzzleFlash, Mesh, TEXT("Muzzle"));
+		UGameplayStatics::SpawnSoundAttached(MuzzleSound, Mesh, TEXT("Muzzle"));
 	}
 	FHitResult ShotResult;
 	FVector ShotDirection;
@@ -56,9 +57,10 @@ void ABaseGun::PullTrigger()
 			FPointDamageEvent GunDamageEvent(GunDamage, ShotResult, ShotDirection, nullptr);
 			HitActor->TakeDamage(GunDamage, GunDamageEvent, GetOwnerController(), this);
 		}
-		if (ImpactFlash != nullptr)
+		if (ImpactFlash != nullptr && ImpactSound != nullptr)
 		{
 			UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), ImpactFlash, ShotResult.Location, ShotDirection.Rotation(), true);
+			UGameplayStatics::SpawnSoundAtLocation(GetWorld(), ImpactSound, ShotResult.Location);
 		}
 	}
 }
