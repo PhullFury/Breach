@@ -2,6 +2,7 @@
 
 
 #include "Animation/AnimInstance.h"
+#include "Breach/GameModes/BreachGameMode.h"
 #include "Breach/Pawns/BaseGun.h"
 #include "Components/CapsuleComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
@@ -32,9 +33,7 @@ void APlayerCharacter::BeginPlay()
 	}
 
 	Health = MaxHealth;
-	UE_LOG(LogTemp, Warning, TEXT("Total Health: %f"), Health);
 	Bullets = Gun->GetMaxBullets();
-	UE_LOG(LogTemp, Warning, TEXT("Total Bullets: %i"), Bullets);
 	FireRate = Gun->GetFireRate();
 }
 
@@ -97,7 +96,6 @@ void APlayerCharacter::Shoot()
 	{
 		Gun->PullTrigger();
 		Bullets--;
-		UE_LOG(LogTemp, Warning, TEXT("Bullets Remaining: %i"), Bullets);
 		if (FireAnimation != nullptr)
 		{
 			PlayAnimMontage(FireAnimation, 1.f);
@@ -105,7 +103,6 @@ void APlayerCharacter::Shoot()
 	}
 	else
 	{
-		UE_LOG(LogTemp, Error, TEXT("No bullets Remaining"));
 		GetWorld()->GetTimerManager().ClearTimer(FireRateHandle);
 	}
 }
@@ -113,10 +110,6 @@ void APlayerCharacter::Shoot()
 void APlayerCharacter::EnemyShoot()
 {
 	Gun->PullTrigger();
-	if (FireAnimation != nullptr)
-	{
-		PlayAnimMontage(FireAnimation, 1.f);
-	}
 }
 
 void APlayerCharacter::Reload()
@@ -134,10 +127,15 @@ float APlayerCharacter::TakeDamage(float DamageAmount, struct FDamageEvent const
 	float DamageToApply = Super::TakeDamage(DamageAmount, DamageEvent, EventInstigator, DamageCauser);
 	DamageToApply = FMath::Min(Health, DamageToApply);
 	Health -= DamageToApply;
-	UE_LOG(LogTemp, Warning, TEXT("Remaining Health: %f"), Health);
 
 	if (IsDead())
 	{
+		ABreachGameMode* GameMode = GetWorld()->GetAuthGameMode<ABreachGameMode>();
+		if (GameMode != nullptr)
+		{
+			GameMode->PawnKilled(this);
+			GameMode->NoOfPawnKilled(1);
+		}
 		DetachFromControllerPendingDestroy();
 		GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 	}

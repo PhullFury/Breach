@@ -22,4 +22,11 @@ private:
 		UUserWidget* HUD;
 	UPROPERTY(EditAnywhere, Category = "UI")
 		TSubclassOf<UUserWidget> HUDClass;
+
+	FTimerHandle RestartTimer;
+
+
+public:
+	virtual void GameHasEnded(class AActor* EndGameFocus = nullptr, bool bIsWinner = false) override;
+	bool ReturnPlayerState();
 };
