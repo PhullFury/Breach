@@ -1,13 +1,13 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
+#include "PlayerCharacter.h"
 #include "Animation/AnimInstance.h"
 #include "Breach/GameModes/BreachGameMode.h"
 #include "Breach/Pawns/BaseGun.h"
 #include "Components/CapsuleComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Kismet/GameplayStatics.h"
-#include "PlayerCharacter.h"
 #include "TimerManager.h"
 
 
@@ -134,7 +134,6 @@ float APlayerCharacter::TakeDamage(float DamageAmount, struct FDamageEvent const
 		if (GameMode != nullptr)
 		{
 			GameMode->PawnKilled(this);
-			GameMode->NoOfPawnKilled(1);
 		}
 		DetachFromControllerPendingDestroy();
 		GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);

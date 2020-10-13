@@ -20,13 +20,20 @@ protected:
 private:
 	UPROPERTY()
 		UUserWidget* HUD;
+	UPROPERTY()
+		UUserWidget* LoseScreen;
+	UPROPERTY()
+		UUserWidget* WinScreen;
 	UPROPERTY(EditAnywhere, Category = "UI")
 		TSubclassOf<UUserWidget> HUDClass;
+	UPROPERTY(EditAnywhere, Category = "UI")
+		TSubclassOf<UUserWidget> LoseScreenClass;
+	UPROPERTY(EditAnywhere, Category = "UI")
+		TSubclassOf<UUserWidget> WinScreenClass;
 
 	FTimerHandle RestartTimer;
 
 
 public:
 	virtual void GameHasEnded(class AActor* EndGameFocus = nullptr, bool bIsWinner = false) override;
-	bool ReturnPlayerState();
 };

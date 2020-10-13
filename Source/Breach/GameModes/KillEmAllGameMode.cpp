@@ -1,52 +1,39 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "Breach/PlayerControllers/PlayersController.h"
 #include "KillEmAllGameMode.h"
+#include "Breach/PlayerControllers/PlayersController.h"
+#include "EngineUtils.h"
 
-
-AKillEmAllGameMode::AKillEmAllGameMode()
-{
-	PrimaryActorTick.bCanEverTick = true;
-}
 
 void AKillEmAllGameMode::BeginPlay()
 {
 	Super::BeginPlay();
-    RequiredKills = 2;
+	CurrentKills = 0;
 }
 
 void AKillEmAllGameMode::PawnKilled(APawn* PawnKilled)
 {
 	Super::PawnKilled(PawnKilled);
 
-	PController = Cast<APlayersController>(PawnKilled->GetController());
-	UE_LOG(LogTemp, Error, TEXT("Pawn Detected"));
-}
-
-void AKillEmAllGameMode::NoOfPawnKilled(int32 IncreasedNo)
-{
-	Super::NoOfPawnKilled(IncreasedNo);
-
-	KillCount = KillCount + IncreasedNo;
-	UE_LOG(LogTemp, Error, TEXT("Kill Increased"));
-}
-
-void AKillEmAllGameMode::Tick(float DeltaTime)
-{
-	Super::Tick(DeltaTime);
-
-	UE_LOG(LogTemp, Error, TEXT("GameEnd is called"));
-
-	if (KillCount == RequiredKills)
+	CurrentKills += 1;
+	if (CurrentKills == RequiredKills)
 	{
-		bPlayerWon = true;
-		UE_LOG(LogTemp, Error, TEXT("You Won"));
+		EndGame(true);
 	}
 
-	if (PController->ReturnPlayerState())
+	APlayersController* PController = Cast<APlayersController>(PawnKilled->GetController());
+	if (PController != nullptr)
 	{
-		bPlayerWon = false;
-		UE_LOG(LogTemp, Error, TEXT("You Lost"));
+		EndGame(false);
+	}
+}
+
+void AKillEmAllGameMode::EndGame(bool bIsPlayerWinner)
+{
+	for (AController* Controller : TActorRange<AController>(GetWorld()))
+	{
+		bool bIsWinner = Controller->IsPlayerController() == bIsPlayerWinner;
+		Controller->GameHasEnded(Controller->GetPawn(), bIsWinner);
 	}
 }

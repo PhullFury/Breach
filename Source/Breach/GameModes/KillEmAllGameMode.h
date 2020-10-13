@@ -14,24 +14,20 @@ class BREACH_API AKillEmAllGameMode : public ABreachGameMode
 	GENERATED_BODY()
 	
 public:
-	virtual void NoOfPawnKilled(int32 IncreasedNo) override;
 	virtual void PawnKilled(APawn* PawnKilled) override;
-	// Called every frame
-	virtual void Tick(float DeltaTime) override;
-	AKillEmAllGameMode();
-
 	bool bPlayerWon;
-
-
-private:
-	int32 KillCount = 0;
-	APlayersController* PController;
-
-	UPROPERTY(EditAnywhere, Category = "Kills")
-		int32 RequiredKills = 1;
 
 
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
+
+
+private:
+	void EndGame(bool bIsPlayerWinner);
+
+
+	UPROPERTY(EditAnywhere, Category = "Game")
+		int32 RequiredKills = 2;
+	int32 CurrentKills;
 };

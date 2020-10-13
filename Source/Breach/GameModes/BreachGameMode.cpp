@@ -4,10 +4,6 @@
 #include "BreachGameMode.h"
 
 
-void ABreachGameMode::NoOfPawnKilled(int32 IncreasedNo)
-{
-}
-
 void ABreachGameMode::PawnKilled(APawn* PawnKilled)
 {
 }

@@ -1,9 +1,9 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
+#include "PlayersController.h"
 #include "Blueprint/UserWidget.h"
 #include "Breach/Characters/PlayerCharacter.h"
-#include "PlayersController.h"
 #include "TimerManager.h"
 
 
@@ -21,13 +21,23 @@ void APlayersController::BeginPlay()
 void APlayersController::GameHasEnded(class AActor* EndGameFocus, bool bIsWinner)
 {
 	Super::GameHasEnded(EndGameFocus, bIsWinner);
-
-	GetWorld()->GetTimerManager().SetTimer(RestartTimer, this, &APlayerController::RestartLevel, 5);
-}
-
-bool APlayersController::ReturnPlayerState()
-{
-	APlayerCharacter* PShooter = Cast<APlayerCharacter>(GetPawn());
 	
-	return PShooter->IsDead();	
+	if (bIsWinner)
+	{
+		WinScreen = CreateWidget(this, WinScreenClass);
+		if (WinScreen != nullptr)
+		{
+			WinScreen->AddToViewport();
+		}
+	}
+	else
+	{
+		LoseScreen = CreateWidget(this, LoseScreenClass);
+		if (LoseScreen != nullptr)
+		{
+			LoseScreen->AddToViewport();
+		}
+	}	
+	
+	GetWorldTimerManager().SetTimer(RestartTimer, this, &APlayerController::RestartLevel, 5);
 }

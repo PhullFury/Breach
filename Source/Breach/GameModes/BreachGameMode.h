@@ -13,6 +13,5 @@ class BREACH_API ABreachGameMode : public AGameModeBase
 	GENERATED_BODY()
 	
 public:
-	virtual void NoOfPawnKilled(int32 IncreasedNo);
 	virtual void PawnKilled(APawn* PawnKilled);
 };
