@@ -26,8 +26,8 @@ protected:
 private:
 	void EndGame(bool bIsPlayerWinner);
 
-
 	UPROPERTY(EditAnywhere, Category = "Game")
 		int32 RequiredKills = 2;
+
 	int32 CurrentKills;
 };
