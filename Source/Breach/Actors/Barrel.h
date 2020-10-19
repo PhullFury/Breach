@@ -38,4 +38,5 @@ private:
 
 	float Health;
 	
+	void Explode();
 };
