@@ -17,6 +17,7 @@ void AKillEmAllGameMode::PawnKilled(APawn* PawnKilled)
 	Super::PawnKilled(PawnKilled);
 
 	CurrentKills += 1;
+	UE_LOG(LogTemp, Warning, TEXT("I have %i kills"), CurrentKills);
 	if (CurrentKills == RequiredKills)
 	{
 		EndGame(true);

@@ -42,6 +42,10 @@ private:
 		float MaxRange = 1000;
 	UPROPERTY(EditAnywhere, Category = "Combat")
 		float GunDamage = 10;
+	UPROPERTY(EditAnywhere, Category = "Combat")
+		bool bIsInaccurate = true;
+	UPROPERTY(EditAnywhere, Category = "Combat")
+		float Inaccuracy = 20;
 	UPROPERTY(EditDefaultsOnly, Category = "Effects")
 		UParticleSystem* MuzzleFlash;
 	UPROPERTY(EditDefaultsOnly, Category = "Effects")
@@ -53,4 +57,5 @@ private:
 
 	bool GunTrace(FHitResult& ShotResult, FVector& ShotDirection);
 	AController* GetOwnerController() const;
+	FVector HitLocation;
 };

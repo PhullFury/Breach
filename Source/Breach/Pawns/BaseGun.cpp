@@ -4,6 +4,7 @@
 #include "BaseGun.h"
 #include "Breach/Characters/PlayerCharacter.h"
 #include "Components/SkeletalMeshComponent.h"
+#include "DrawDebugHelpers.h"
 #include "Kismet/GameplayStatics.h"
 
 #define OUT
@@ -82,13 +83,23 @@ bool ABaseGun::GunTrace(FHitResult& ShotResult, FVector& ShotDirection)
 	FRotator OwnerRotation;
 	GetOwnerController()->GetPlayerViewPoint(OUT OwnerLocation, OUT OwnerRotation);
 	ShotDirection = -OwnerRotation.Vector();
-	FVector LineEnd = OwnerLocation + OwnerRotation.Vector() * MaxRange;
+	if (bIsInaccurate)
+	{
+		FVector LineEnd = OwnerLocation + OwnerRotation.Vector() * MaxRange;
+		float BulletSpread = FMath::FRandRange(0, Inaccuracy);
+		HitLocation = FMath::VRandCone(LineEnd, BulletSpread);
+		DrawDebugCamera(GetWorld(), OwnerLocation, OwnerRotation, 1, 1, FColor::Red);
+	}
+	else
+	{
+		HitLocation = OwnerLocation + OwnerRotation.Vector() * MaxRange;
+	}
 	ShotResult;
 	FCollisionQueryParams Params;
 	Params.AddIgnoredActor(this);
 	Params.AddIgnoredActor(GetOwner());
 
-	return GetWorld()->LineTraceSingleByChannel(OUT ShotResult, OwnerLocation, LineEnd, ECollisionChannel::ECC_GameTraceChannel1, Params);
+	return GetWorld()->LineTraceSingleByChannel(OUT ShotResult, OwnerLocation, HitLocation, ECollisionChannel::ECC_GameTraceChannel1, Params);
 }
 
 int32 ABaseGun::GetMaxBullets()
