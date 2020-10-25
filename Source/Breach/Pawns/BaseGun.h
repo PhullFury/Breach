@@ -45,7 +45,7 @@ private:
 	UPROPERTY(EditAnywhere, Category = "Combat")
 		bool bIsInaccurate = true;
 	UPROPERTY(EditAnywhere, Category = "Combat")
-		float Inaccuracy = 20;
+		float Inaccuracy = 5;
 	UPROPERTY(EditDefaultsOnly, Category = "Effects")
 		UParticleSystem* MuzzleFlash;
 	UPROPERTY(EditDefaultsOnly, Category = "Effects")

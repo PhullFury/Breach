@@ -131,6 +131,7 @@ float APlayerCharacter::TakeDamage(float DamageAmount, struct FDamageEvent const
 	if (IsDead())
 	{
 		ABreachGameMode* GameMode = GetWorld()->GetAuthGameMode<ABreachGameMode>();
+		AController* Controller = GetController();
 		if (GameMode != nullptr)
 		{
 			GameMode->PawnKilled(this);

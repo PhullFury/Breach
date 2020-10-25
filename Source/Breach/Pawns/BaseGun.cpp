@@ -78,22 +78,25 @@ AController* ABaseGun::GetOwnerController() const
 bool ABaseGun::GunTrace(FHitResult& ShotResult, FVector& ShotDirection)
 {
 	if (GetOwnerController() == nullptr) return false;
-
 	FVector OwnerLocation;
 	FRotator OwnerRotation;
-	GetOwnerController()->GetPlayerViewPoint(OUT OwnerLocation, OUT OwnerRotation);
-	ShotDirection = -OwnerRotation.Vector();
 	if (bIsInaccurate)
 	{
-		FVector LineEnd = OwnerLocation + OwnerRotation.Vector() * MaxRange;
-		float BulletSpread = FMath::FRandRange(0, Inaccuracy);
-		HitLocation = FMath::VRandCone(LineEnd, BulletSpread);
-		DrawDebugCamera(GetWorld(), OwnerLocation, OwnerRotation, 1, 1, FColor::Red);
+		GetOwnerController()->GetPlayerViewPoint(OUT OwnerLocation, OUT OwnerRotation);
+		float BulletSpreadX = FMath::FRandRange(-Inaccuracy, Inaccuracy);
+		float BulletSpreadY = FMath::FRandRange(-Inaccuracy, Inaccuracy);
+		float BulletSpreadZ = FMath::FRandRange(-Inaccuracy, Inaccuracy);
+		OwnerRotation.Roll = OwnerRotation.Roll + BulletSpreadX;
+		OwnerRotation.Pitch = OwnerRotation.Pitch + BulletSpreadY;
+		OwnerRotation.Yaw = OwnerRotation.Yaw + BulletSpreadZ;
+		HitLocation = OwnerLocation + OwnerRotation.Vector() * MaxRange;
 	}
 	else
 	{
+		GetOwnerController()->GetPlayerViewPoint(OUT OwnerLocation, OUT OwnerRotation);
 		HitLocation = OwnerLocation + OwnerRotation.Vector() * MaxRange;
 	}
+	ShotDirection = -OwnerRotation.Vector();
 	ShotResult;
 	FCollisionQueryParams Params;
 	Params.AddIgnoredActor(this);

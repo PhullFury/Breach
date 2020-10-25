@@ -17,6 +17,10 @@ public:
 	virtual void PawnKilled(APawn* PawnKilled) override;
 	bool bPlayerWon;
 
+	// Called every frame
+	virtual void Tick(float DeltaTime) override; 
+	AKillEmAllGameMode();
+
 
 protected:
 	// Called when the game starts or when spawned
@@ -27,7 +31,7 @@ private:
 	void EndGame(bool bIsPlayerWinner);
 
 	UPROPERTY(EditAnywhere, Category = "Game")
-		int32 RequiredKills = 2;
+		int32 RequiredEnemies = 1;
 
-	int32 CurrentKills;
+	int32 CurrentEnemies;
 };
