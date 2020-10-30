@@ -31,7 +31,7 @@ private:
 	void EndGame(bool bIsPlayerWinner);
 
 	UPROPERTY(EditAnywhere, Category = "Game")
-		int32 RequiredEnemies = 1;
+		int32 RequiredKills = 2;
 
-	int32 CurrentEnemies;
+	int32 CurrentKills;
 };

@@ -15,11 +15,7 @@ void AKillEmAllGameMode::BeginPlay()
 {
 	Super::BeginPlay();
 
-	for (ABreachAIController* Enemy : TActorRange<ABreachAIController>(GetWorld()))
-	{
-		CurrentEnemies += 1;
-	}
-	UE_LOG(LogTemp, Warning, TEXT("Current Enemies: %i"), CurrentEnemies);
+	CurrentKills = 0;
 }
 
 void AKillEmAllGameMode::Tick(float DeltaTime)
@@ -31,16 +27,17 @@ void AKillEmAllGameMode::PawnKilled(APawn* PawnKilled)
 {
 	Super::PawnKilled(PawnKilled);
 
-	UE_LOG(LogTemp, Error, TEXT("Current Enemies: %i"), CurrentEnemies);
-	if (CurrentEnemies == RequiredEnemies)
-	{
-		EndGame(true);
-	}
-
+	CurrentKills += 1;
 	APlayersController* PController = Cast<APlayersController>(PawnKilled->GetController());
 	if (PController != nullptr)
 	{
 		EndGame(false);
+	}
+
+	UE_LOG(LogTemp, Error, TEXT("Current Kills: %i"), CurrentKills);
+	if (CurrentKills == RequiredKills)
+	{
+		EndGame(true);
 	}
 }
 

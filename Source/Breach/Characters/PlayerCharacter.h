@@ -60,4 +60,6 @@ private:
 		USoundBase* ReloadSound;
 	UPROPERTY(EditAnywhere, Category = "Health")
 		float MaxHealth = 100;
+	UPROPERTY(EditAnywhere, Category = "Health")
+		bool bIsEnemy = true;
 };
